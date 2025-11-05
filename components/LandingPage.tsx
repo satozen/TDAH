@@ -28,12 +28,12 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
   const [visibleMessages, setVisibleMessages] = useState<number[]>([])
 
   const costMessages = [
-    { emoji: '📱', message: 'Client: "Tu ne t\'es pas présenté au rendez-vous?"', cost: 2350, delay: 0 },
-    { emoji: '⏰', message: 'Vous: "Merde, j\'ai encore scrollé 2h sur TikTok"', cost: 1685, delay: 2000 },
-    { emoji: '💸', message: 'Banque: "Frais de retard - Facture impayée"', cost: 1175, delay: 4000 },
-    { emoji: '😰', message: 'Vous: "Je suis tellement épuisé... encore un burnout"', cost: 890, delay: 6000 },
-    { emoji: '🚪', message: 'Employé: "Je démissionne, c\'est trop chaotique ici"', cost: 1240, delay: 8000 },
-    { emoji: '📉', message: 'Opportunité manquée: Contrat à 10K perdu', cost: 2960, delay: 10000 }
+    { emoji: '📱', message: 'Client perdu: Rendez-vous oublié → Contrat annulé', detail: 'Projet estimé à 2,350$', cost: 2350, delay: 0 },
+    { emoji: '⏰', message: 'Procrastination: 3h perdues aujourd\'hui', detail: '18h ce mois x 95$/h de productivité', cost: 1685, delay: 2000 },
+    { emoji: '💸', message: 'Pénalités: Facture fournisseur en retard', detail: 'Frais + intérêts + relation détériorée', cost: 1175, delay: 4000 },
+    { emoji: '😰', message: 'Burnout: 4 jours d\'arrêt ce mois', detail: 'Perte revenus + médecin + rattrapage', cost: 890, delay: 6000 },
+    { emoji: '🚪', message: 'Employé démissionne: "C\'est trop chaotique"', detail: 'Recrutement + formation nouveau = 1,240$', cost: 1240, delay: 8000 },
+    { emoji: '📉', message: 'Opportunité ratée: Trop débordé pour soumissionner', detail: 'Contrat à 10K perdu faute de temps', cost: 2960, delay: 10000 }
   ]
 
   useEffect(() => {
@@ -920,8 +920,11 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                       >
                         <div className="text-3xl flex-shrink-0">{msg.emoji}</div>
                         <div className="flex-1">
-                          <p className="text-sm font-semibold text-apple-gray-dark mb-1">
+                          <p className="text-sm font-bold text-apple-gray-dark mb-1">
                             {msg.message}
+                          </p>
+                          <p className="text-xs text-apple-gray mb-2">
+                            {msg.detail}
                           </p>
                           <p className="text-xl font-bold text-red-600">
                             -{msg.cost.toLocaleString()}$
