@@ -5,8 +5,8 @@
 
 'use client'
 
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
 interface LandingPageProps {
   onGetStarted: () => void
@@ -21,6 +21,62 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
 
   // Section Interactive - Démo personnalisation IA
   const [selectedSector, setSelectedSector] = useState<string | null>(null)
+
+  // Animation des coûts qui s'additionnent
+  const [costAnimationStarted, setCostAnimationStarted] = useState(false)
+  const [currentCost, setCurrentCost] = useState(0)
+  const [visibleMessages, setVisibleMessages] = useState<number[]>([])
+
+  const costMessages = [
+    { emoji: '📱', message: 'Client: "Tu ne t\'es pas présenté au rendez-vous?"', cost: 2350, delay: 0 },
+    { emoji: '⏰', message: 'Vous: "Merde, j\'ai encore scrollé 2h sur TikTok"', cost: 1685, delay: 2000 },
+    { emoji: '💸', message: 'Banque: "Frais de retard - Facture impayée"', cost: 1175, delay: 4000 },
+    { emoji: '😰', message: 'Vous: "Je suis tellement épuisé... encore un burnout"', cost: 890, delay: 6000 },
+    { emoji: '🚪', message: 'Employé: "Je démissionne, c\'est trop chaotique ici"', cost: 1240, delay: 8000 },
+    { emoji: '📉', message: 'Opportunité manquée: Contrat à 10K perdu', cost: 2960, delay: 10000 }
+  ]
+
+  useEffect(() => {
+    if (!costAnimationStarted) return
+
+    let accumulatedCost = 0
+    const timeouts: NodeJS.Timeout[] = []
+    const intervals: NodeJS.Timeout[] = []
+
+    // Afficher les messages progressivement
+    costMessages.forEach((msg, index) => {
+      const timeout = setTimeout(() => {
+        setVisibleMessages(prev => [...prev, index])
+        
+        // Animer le compteur progressivement
+        const targetCost = accumulatedCost + msg.cost
+        const increment = msg.cost / 20 // 20 frames pour animation fluide
+        let frame = 0
+        
+        const interval = setInterval(() => {
+          frame++
+          accumulatedCost += increment
+          setCurrentCost(Math.round(accumulatedCost))
+          
+          if (frame >= 20) {
+            clearInterval(interval)
+          }
+        }, 20)
+        
+        intervals.push(interval)
+      }, msg.delay)
+      
+      timeouts.push(timeout)
+    })
+
+    return () => {
+      timeouts.forEach(t => clearTimeout(t))
+      intervals.forEach(i => clearInterval(i))
+      setVisibleMessages([])
+      setCurrentCost(0)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [costAnimationStarted])
 
   const sectors = [
     {
@@ -56,19 +112,19 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     agricole: {
       title: "Personnalisé pour PME Agricole",
-      text: "En tant qu'entrepreneur agricole avec TDAH, votre journée est rythmée par les saisons et les cycles de production. Vous jonglez entre la gestion des cultures, les commandes clients, et la paperasse administrative. Votre hyperfocus devient un atout lors des périodes de récolte, mais la procrastination sur les tâches comptables peut vous coûter cher. Apprenez à synchroniser votre énergie TDAH avec vos cycles agricoles pour maximiser votre productivité aux moments critiques."
+      text: "5h du matin, vous êtes déjà debout. Pendant que vos vaches attendent leur traite, votre tête explose avec 47 idées pour optimiser votre ferme. Mais impossible de vous concentrer sur cette maudite déclaration gouvernementale qui traîne depuis 3 semaines. Votre TDAH fait de vous un visionnaire qui peut imaginer 10 ans d'avance... mais vous oubliez de facturer vos clients. On va transformer cette énergie débordante en système béton qui marche même à 5h du matin quand votre cerveau part dans tous les sens."
     },
     construction: {
       title: "Personnalisé pour Construction",
-      text: "Dans le secteur de la construction avec TDAH, vous gérez simultanément plusieurs chantiers, des équipes sur le terrain, et des clients exigeants. Votre impulsivité TDAH vous permet de prendre des décisions rapides sur les imprévus de chantier, mais peut vous faire oublier de suivre les délais administratifs. Transformez votre hyperactivité en super-pouvoir de coordination et créez des systèmes visuels pour ne jamais perdre le fil de vos projets en cours."
+      text: "Trois chantiers simultanés. Cinq sous-traitants qui vous appellent. Un client qui change d'avis pour la énième fois. Et vous ? Vous êtes partout et nulle part à la fois. Votre TDAH fait de vous le MacGyver des chantiers - vous résolvez des crises en 2 secondes que d'autres mettraient des heures à analyser. Mais ce soir ? Encore oublié de mettre à jour le planning. On va canaliser ce génie de l'improvisation et créer des systèmes visuels qui collent à votre façon de penser, pas celle des autres."
     },
     tech: {
       title: "Personnalisé pour Tech & Startup",
-      text: "Entrepreneur tech avec TDAH ? Votre cerveau est fait pour l'innovation et le pivot rapide. Vous excellez dans le code en hyperfocus, mais la gestion de produit et les meetings vous épuisent. Votre distraction devient curiosité technologique, votre impulsivité devient agilité entrepreneuriale. Apprenez à canaliser votre énergie TDAH dans les sprints de développement et à déléguer ce qui draine votre dopamine."
+      text: "Minuit. Vous codez en hyperfocus depuis 6 heures. Vous venez de résoudre un bug que personne ne comprenait. Vous êtes un génie. Lendemain matin : vous avez raté 3 meetings, oublié de répondre à 15 emails, et votre co-fondateur est au bord de la crise de nerfs. Votre TDAH fait de vous un innovateur de feu... mais un gestionnaire catastrophique. Bonne nouvelle : vous n'avez pas besoin de devenir quelqu'un d'autre. On va structurer votre chaos créatif pour que votre startup explose (dans le bon sens)."
     },
     commerce: {
       title: "Personnalisé pour Commerce & Retail",
-      text: "Dans le commerce avec TDAH, vous êtes sur tous les fronts : gestion des stocks, service client, marketing, réseaux sociaux. Votre créativité TDAH vous donne des idées de promotions géniales, mais l'inventaire vous ennuie à mourir. Transformez votre sensibilité émotionnelle en connexion client authentique et créez des routines qui rendent la gestion de stock aussi stimulante qu'une nouvelle campagne marketing."
+      text: "Vous avez 15 idées de campagnes marketing géniales par jour. Votre feed Instagram est parfait. Vos clients vous adorent. Mais votre inventaire ? Un mystère complet. Cette commande urgente ? Vous l'avez commandée... ou pas ? Avec le TDAH dans le commerce, vous êtes brillant(e) dans l'humain, nul(le) dans le système. Résultat : vous courez partout, vous êtes épuisé(e), et vous laissez de l'argent sur la table. On va faire de votre sensibilité émotionnelle votre force de vente ET créer des systèmes tellement simples que même en rush, ça roule."
     }
   }
 
@@ -141,8 +197,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     {
       icon: '🧠',
-      title: 'Basé sur la recherche scientifique',
-      description: 'Appuyé par le travail de Mme Pierrette Desrosiers, psychologue spécialisée en TDAH entrepreneurial. Parce que la science, ça compte.',
+      title: 'Contenu scientifique rigoureux',
+      description: 'Chaque module est ancré dans des années de recherche et d\'expérience terrain de Mme Pierrette Desrosiers. Ce ne sont pas des trucs qu\'on a inventés hier matin. C\'est de la vraie science, testée avec de vrais entrepreneurs TDAH.',
       color: 'from-purple-500 to-pink-600'
     },
     {
@@ -165,9 +221,79 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     {
       icon: '🚀',
-      title: 'Gratuit. Sans piège. Sans bullshit.',
-      description: 'Vraiment gratuit. On vous demande rien en échange. Juste de transformer votre vie entrepreneuriale. C\'est notre mission.',
+      title: 'Commencez gratuitement',
+      description: 'Testez les 2 premiers modules sans sortir votre carte de crédit. Découvrez si le programme vous convient avant de vous engager. Zéro risque, zéro pression.',
       color: 'from-pink-500 to-rose-600'
+    }
+  ]
+
+  const pricingPlans = [
+    {
+      name: 'Freemium',
+      price: 'Gratuit',
+      period: 'toujours',
+      description: 'Découvrez si le programme est fait pour vous',
+      features: [
+        'Accès aux modules 1-2',
+        'Contenu de base personnalisé',
+        'Exercices pratiques',
+        'Communauté en ligne'
+      ],
+      cta: 'Commencer gratuitement',
+      highlight: false,
+      color: 'from-gray-500 to-gray-600'
+    },
+    {
+      name: 'Premium',
+      price: '97',
+      period: '/mois',
+      description: 'Le programme complet pour entrepreneurs autonomes',
+      features: [
+        'Tous les 8 modules complets',
+        'IA personnalisée ultra-précise',
+        'Exercices avancés + templates',
+        'Mises à jour mensuelles',
+        'Support prioritaire',
+        'Accès à vie aux contenus'
+      ],
+      cta: 'Débloquer tout maintenant',
+      highlight: true,
+      color: 'from-apple-blue to-apple-purple'
+    },
+    {
+      name: 'Elite Pro',
+      price: '997',
+      period: 'one-time',
+      description: 'Accompagnement individuel avec Mme Desrosiers',
+      features: [
+        'Tout de Premium',
+        '3 séances 1-on-1 (90 min)',
+        'Plan d\'action personnalisé',
+        'Suivi sur 3 mois',
+        'Accès direct par email'
+      ],
+      cta: 'Contactez-nous',
+      highlight: false,
+      color: 'from-purple-500 to-pink-600',
+      contactOnly: true
+    },
+    {
+      name: 'Elite VIP',
+      price: '1,997',
+      period: 'one-time',
+      description: 'Transformation complète avec accompagnement intensif',
+      features: [
+        'Tout de Elite Pro',
+        '8 séances 1-on-1 (90 min)',
+        'Coaching hebdomadaire (6 mois)',
+        'Révision de vos systèmes',
+        'Support illimité',
+        'Garantie résultats'
+      ],
+      cta: 'Contactez-nous',
+      highlight: false,
+      color: 'from-orange-500 to-red-600',
+      contactOnly: true
     }
   ]
 
@@ -444,11 +570,13 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <span className="text-purple-600 font-bold text-sm md:text-base">✨ DÉMONSTRATION INTERACTIVE</span>
             </div>
             <h2 className="text-4xl md:text-6xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
-              Voyez la magie de la personnalisation IA
+              L'intersection parfaite : IA + Expertise scientifique
             </h2>
-            <p className="text-xl text-apple-gray max-w-3xl mx-auto leading-relaxed">
-              Cliquez sur votre secteur d'activité et voyez comment le même contenu se transforme 
-              pour parler <span className="font-bold text-apple-purple">directement à VOUS</span>.
+            <p className="text-xl text-apple-gray-dark max-w-4xl mx-auto leading-relaxed mb-6">
+              Notre programme n'est pas juste du contenu généré par IA. C'est l'expertise terrain de <span className="font-bold text-purple-600">Mme Pierrette Desrosiers</span>, psychologue spécialisée en TDAH entrepreneurial, combinée à une <span className="font-bold text-purple-600">personnalisation intelligente</span> qui s'adapte à VOTRE réalité.
+            </p>
+            <p className="text-lg text-apple-gray max-w-3xl mx-auto leading-relaxed">
+              <span className="font-semibold text-apple-gray-dark">Voyez la différence :</span> Cliquez sur votre secteur d'activité et découvrez comment des stratégies scientifiquement prouvées se transforment pour parler directement à VOUS.
             </p>
           </motion.div>
 
@@ -545,14 +673,16 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
-            className="mt-12 text-center bg-gradient-to-r from-purple-100 to-pink-100 rounded-apple p-8"
+            className="mt-12 text-center bg-gradient-to-r from-purple-100 to-pink-100 rounded-apple p-8 md:p-10"
           >
             <h3 className="text-2xl md:text-3xl font-bold text-apple-gray-dark mb-4">
               Imaginez 8 modules entiers personnalisés comme ça ! 🤯
             </h3>
-            <p className="text-lg text-apple-gray mb-6">
-              Chaque section, chaque exercice, chaque astuce adaptée à VOTRE secteur, 
-              VOS défis, VOTRE profil TDAH unique.
+            <p className="text-lg text-apple-gray-dark mb-4 leading-relaxed">
+              <span className="font-bold">Du vrai contenu scientifique</span> basé sur des années de recherche et d'expertise terrain de Mme Desrosiers, adapté en temps réel à VOTRE secteur, VOS défis, VOTRE profil TDAH unique.
+            </p>
+            <p className="text-base text-apple-gray mb-6 max-w-2xl mx-auto">
+              Ce n'est pas de l'IA qui invente. C'est de la science rigoureuse qui devient personnelle.
             </p>
             <motion.button
               onClick={handleCTA}
@@ -633,6 +763,271 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               ✨ Je veux accéder au programme maintenant →
             </motion.button>
           </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION PRICING */}
+      <section className="py-20 bg-gradient-to-b from-white via-blue-50/30 to-apple-bg">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
+              Choisissez votre parcours
+            </h2>
+            <p className="text-xl text-apple-gray max-w-3xl mx-auto leading-relaxed">
+              Du freemium pour tester, au coaching VIP personnalisé avec Mme Desrosiers. 
+              Trouvez la formule qui correspond à vos besoins.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative bg-white rounded-apple-sm p-6 shadow-apple-md transition-all duration-200 border-2 ${
+                  plan.highlight 
+                    ? 'border-apple-blue lg:scale-105 shadow-apple-xl' 
+                    : 'border-gray-200 hover:shadow-apple-lg'
+                }`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-apple-blue to-apple-purple text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                      ⭐ POPULAIRE
+                    </span>
+                  </div>
+                )}
+
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-apple-gray-dark mb-2">
+                    {plan.name}
+                  </h3>
+                  <p className="text-sm text-apple-gray mb-4 min-h-[40px]">
+                    {plan.description}
+                  </p>
+                  <div className="mb-4">
+                    {plan.price === 'Gratuit' ? (
+                      <div className="text-4xl font-bold text-apple-gray-dark">
+                        Gratuit
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-4xl font-bold text-apple-gray-dark">
+                          {plan.price}$
+                        </div>
+                        <div className="text-sm text-apple-gray">
+                          {plan.period === '/mois' ? 'par mois' : 'paiement unique'}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <ul className="space-y-3 mb-6">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <span className="text-green-500 mt-0.5">✓</span>
+                      <span className="text-apple-gray-dark">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <motion.button
+                  onClick={handleCTA}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`w-full py-3 rounded-xl font-semibold transition-all ${
+                    plan.highlight
+                      ? 'bg-gradient-to-r from-apple-blue to-apple-purple text-white shadow-lg hover:shadow-xl'
+                      : 'bg-gray-100 text-apple-gray-dark hover:bg-gray-200'
+                  }`}
+                >
+                  {plan.cta}
+                </motion.button>
+
+                {plan.contactOnly && (
+                  <p className="text-xs text-apple-gray text-center mt-3">
+                    Places limitées - Sur candidature
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <p className="text-apple-gray">
+              💳 Paiement sécurisé · 🔒 Garantie 30 jours satisfait ou remboursé (Premium)
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION COÛT DE L'INACTION - VERSION ANIMÉE */}
+      <section className="py-20 bg-gradient-to-b from-apple-bg via-red-50/20 to-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
+              Parlons du VRAI coût
+            </h2>
+            <p className="text-xl text-apple-gray max-w-3xl mx-auto leading-relaxed mb-8">
+              97$ par mois vous semble cher ? Voyons combien vous coûte votre TDAH non géré <span className="font-bold text-red-600">CHAQUE MOIS</span>.
+            </p>
+            {!costAnimationStarted && (
+              <motion.button
+                onClick={() => setCostAnimationStarted(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg"
+              >
+                ▶️ Voir une journée typique d'entrepreneur TDAH
+              </motion.button>
+            )}
+          </motion.div>
+
+          {/* Zone d'animation des messages et compteur */}
+          {costAnimationStarted && (
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {/* Colonne gauche: Messages qui apparaissent comme des notifications */}
+              <div className="space-y-4 min-h-[500px]">
+                <AnimatePresence>
+                  {costMessages.map((msg, index) => (
+                    visibleMessages.includes(index) && (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -50, scale: 0.8 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                        className="bg-white rounded-2xl p-4 shadow-lg border-l-4 border-red-500 flex items-start gap-3"
+                      >
+                        <div className="text-3xl flex-shrink-0">{msg.emoji}</div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-apple-gray-dark mb-1">
+                            {msg.message}
+                          </p>
+                          <p className="text-xl font-bold text-red-600">
+                            -{msg.cost.toLocaleString()}$
+                          </p>
+                        </div>
+                      </motion.div>
+                    )
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              {/* Colonne droite: Compteur géant qui monte */}
+              <div className="flex items-center justify-center">
+                <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-apple p-8 md:p-12 text-center border-4 border-red-200 shadow-apple-xl w-full">
+                  <p className="text-lg text-apple-gray mb-4">Coûts accumulés ce mois:</p>
+                  <motion.div
+                    key={currentCost}
+                    initial={{ scale: 1.2, color: '#ef4444' }}
+                    animate={{ scale: 1, color: '#991b1b' }}
+                    transition={{ duration: 0.3 }}
+                    className="text-6xl md:text-7xl font-bold mb-4"
+                  >
+                    {currentCost.toLocaleString()}$
+                  </motion.div>
+                  <p className="text-sm text-apple-gray">
+                    {currentCost >= 10300 ? (
+                      <span className="text-red-600 font-bold">
+                        💥 Plus de 123,000$ par année en pertes !
+                      </span>
+                    ) : (
+                      'En cours de calcul...'
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Total dramatique - s'affiche après l'animation */}
+          {costAnimationStarted && currentCost >= 10300 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 1, type: "spring" }}
+              className="bg-gradient-to-r from-red-500 to-orange-500 rounded-apple p-8 md:p-12 text-white text-center shadow-apple-xl"
+            >
+              <p className="text-lg mb-2 opacity-90">Coût total de l'inaction</p>
+              <div className="text-5xl md:text-7xl font-bold mb-4 letter-spacing-apple-tight">
+                ~10,300$ / mois
+              </div>
+              <p className="text-xl mb-6 opacity-95">
+                Soit plus de <span className="font-bold">123,000$ par année</span> que votre TDAH non géré vous coûte en opportunités perdues.
+              </p>
+              <div className="border-t-2 border-white/30 my-6"></div>
+              <p className="text-2xl font-bold mb-4">
+                Notre programme Premium à 97$/mois ?
+              </p>
+              <p className="text-xl opacity-95">
+                C'est <span className="font-bold underline">0,8% du problème</span> pour débloquer 100% de votre potentiel.
+                <br />
+                <span className="text-sm mt-2 block">
+                  (Et si vous êtes en Freemium, vous commencez à 0$ 🤯)
+                </span>
+              </p>
+            </motion.div>
+          )}
+
+          {costAnimationStarted && currentCost >= 10300 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2 }}
+              className="mt-12 text-center"
+            >
+              <p className="text-apple-gray mb-6 text-lg">
+                La vraie question n'est pas "Puis-je me permettre ce programme ?"
+                <br />
+                <span className="font-bold text-apple-gray-dark">
+                  C'est "Puis-je me permettre de NE PAS le suivre ?"
+                </span>
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <motion.button
+                  onClick={handleCTA}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary text-xl px-12 py-5 shadow-apple-xl"
+                >
+                  💰 Je veux arrêter de perdre cet argent maintenant
+                </motion.button>
+                <motion.button
+                  onClick={() => {
+                    setCostAnimationStarted(false)
+                    setCurrentCost(0)
+                    setVisibleMessages([])
+                    setTimeout(() => setCostAnimationStarted(true), 100)
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white text-apple-gray-dark border-2 border-gray-300 px-8 py-4 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all"
+                >
+                  🔄 Rejouer l'animation
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
         </div>
       </section>
 
