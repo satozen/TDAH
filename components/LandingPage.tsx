@@ -108,7 +108,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       emoji: '📉',
       title: 'Vous procrastinez même les trucs que vous AIMEZ',
       description: 'Oui, vous procrastinez même les projets passionnants. Parce que votre cerveau TDAH a ses propres règles. Et vous ne les connaissez pas encore.',
-      impact: '→ Vous n'arrivez pas à finir ce qui vous passionne'
+      impact: '→ Vous n\'arrivez pas à finir ce qui vous passionne'
     }
   ]
 
