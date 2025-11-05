@@ -236,12 +236,40 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl md:text-2xl text-apple-gray mb-12 leading-relaxed max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-apple-gray mb-8 leading-relaxed max-w-3xl mx-auto"
             >
               Le premier programme d'apprentissage personnalisé par IA, conçu pour les entrepreneurs TDAH qui en ont marre des conseils qui ne marchent pas.
-              <br />
-              <span className="text-apple-blue font-semibold">Basé sur le travail de Mme Pierrette Desrosiers, psychologue spécialisée.</span>
             </motion.p>
+
+            {/* Section Pierrette Desrosiers */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-col md:flex-row items-center justify-center gap-6 mb-12 max-w-2xl mx-auto bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-apple-sm border-2 border-purple-200"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex-shrink-0"
+              >
+                <img
+                  src="/pierrette-desrosiers-psycoaching-conferenciere.jpg"
+                  alt="Mme Pierrette Desrosiers, psychologue spécialisée en TDAH"
+                  className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-4 border-white shadow-apple-lg"
+                />
+              </motion.div>
+              <div className="text-center md:text-left">
+                <p className="text-lg font-semibold text-purple-600 mb-1">
+                  Programme appuyé par
+                </p>
+                <p className="text-xl font-bold text-apple-gray-dark mb-1">
+                  Mme Pierrette Desrosiers
+                </p>
+                <p className="text-sm text-apple-gray">
+                  Psychologue spécialisée en TDAH entrepreneurial
+                </p>
+              </div>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
