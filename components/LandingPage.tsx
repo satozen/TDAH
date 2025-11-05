@@ -312,9 +312,6 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-block mb-4 px-6 py-2 bg-red-100 rounded-full">
-              <span className="text-red-600 font-bold text-sm md:text-base">SECTION 1 : LA DOULEUR</span>
-            </div>
             <h2 className="text-4xl md:text-6xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
               Vous reconnaissez-vous dans ces situations ?
             </h2>
@@ -379,9 +376,6 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-block mb-4 px-6 py-2 bg-orange-100 rounded-full">
-              <span className="text-orange-600 font-bold text-sm md:text-base">SECTION 2 : L'AGITATION</span>
-            </div>
             <h2 className="text-4xl md:text-6xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
               Et si vous ne faites rien ?
             </h2>
@@ -581,9 +575,6 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-block mb-4 px-6 py-2 bg-green-100 rounded-full">
-              <span className="text-green-600 font-bold text-sm md:text-base">SECTION 3 : LA SOLUTION</span>
-            </div>
             <h2 className="text-4xl md:text-6xl font-bold text-apple-gray-dark mb-6 letter-spacing-apple-tight">
               Voici comment transformer votre TDAH en super-pouvoir
             </h2>
@@ -610,18 +601,17 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             {benefits.map((benefit, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className={`bg-white rounded-apple-sm p-8 shadow-apple-lg hover:shadow-apple-xl transition-all duration-300 border-l-4 bg-gradient-to-br ${benefit.color} border-transparent`}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+                className="bg-white rounded-apple-sm p-8 shadow-apple-md hover:shadow-apple-lg transition-shadow duration-200 border border-gray-200"
               >
-                <div className="text-6xl mb-4">{benefit.icon}</div>
-                <h3 className="text-2xl font-bold text-apple-gray-dark mb-3 letter-spacing-apple">
+                <div className="text-5xl mb-4">{benefit.icon}</div>
+                <h3 className="text-xl font-bold text-apple-gray-dark mb-3 letter-spacing-apple">
                   {benefit.title}
                 </h3>
-                <p className="text-lg text-apple-gray leading-relaxed">
+                <p className="text-base text-apple-gray-dark leading-relaxed">
                   {benefit.description}
                 </p>
               </motion.div>
