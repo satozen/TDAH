@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-apple-bg text-apple-gray-dark;
+    font-size: 17px;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+  }
+
+  ::selection {
+    @apply bg-apple-blue text-white;
+  }
+
+  *:focus-visible {
+    @apply outline-2 outline-apple-blue outline-offset-2;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/85 backdrop-blur-apple;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-b from-apple-blue to-apple-blue-dark text-white 
+           font-semibold rounded-xl px-6 py-3 
+           transition-all duration-300 
+           hover:shadow-apple-lg hover:-translate-y-0.5
+           active:translate-y-0
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-white border-2 border-gray-200 text-apple-gray-dark
+           font-semibold rounded-xl px-6 py-3
+           transition-all duration-300
+           hover:border-apple-blue hover:text-apple-blue
+           hover:shadow-apple-md hover:-translate-y-0.5;
+  }
+
+  .input-apple {
+    @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200
+           bg-white text-apple-gray-dark
+           transition-all duration-300
+           focus:border-apple-blue focus:ring-0 focus:outline-none
+           placeholder:text-apple-gray;
+  }
+
+  .card-apple {
+    @apply bg-white rounded-apple shadow-apple-lg
+           transition-all duration-300
+           hover:shadow-apple-xl hover:-translate-y-1;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-b from-white to-white/90 
+           bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .letter-spacing-apple {
+    letter-spacing: -0.022em;
+  }
+
+  .letter-spacing-apple-tight {
+    letter-spacing: -0.04em;
+  }
+}
+
