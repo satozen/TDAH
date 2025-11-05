@@ -6,7 +6,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface LandingPageProps {
   onGetStarted: () => void
@@ -26,6 +26,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
   const [costAnimationStarted, setCostAnimationStarted] = useState(false)
   const [currentCost, setCurrentCost] = useState(0)
   const [visibleMessages, setVisibleMessages] = useState<number[]>([])
+  const costSectionRef = useRef<HTMLDivElement>(null)
 
   const costMessages = [
     { emoji: '📱', message: 'Client perdu: Rendez-vous oublié → Contrat annulé', detail: 'Projet estimé à 2,350$', cost: 2350, delay: 0 },
@@ -876,7 +877,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* SECTION COÛT DE L'INACTION - VERSION ANIMÉE */}
-      <section className="py-20 bg-gradient-to-b from-apple-bg via-red-50/20 to-white">
+      <section ref={costSectionRef} className="py-20 bg-gradient-to-b from-apple-bg via-red-50/20 to-white">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1020,7 +1021,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                     setCostAnimationStarted(false)
                     setCurrentCost(0)
                     setVisibleMessages([])
-                    setTimeout(() => setCostAnimationStarted(true), 100)
+                    // Scroll vers le haut de la section - center pour bien voir
+                    costSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    // Redémarrer l'animation
+                    setTimeout(() => setCostAnimationStarted(true), 500)
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
