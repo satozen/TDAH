@@ -263,8 +263,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     {
       name: 'Elite Pro',
-      price: '997',
-      period: 'one-time',
+      price: 'Sur mesure',
+      period: '',
       description: 'Accompagnement individuel avec Mme Desrosiers',
       features: [
         'Tout de Premium',
@@ -280,8 +280,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     {
       name: 'Elite VIP',
-      price: '1,997',
-      period: 'one-time',
+      price: 'Sur mesure',
+      period: '',
       description: 'Transformation complète avec accompagnement intensif',
       features: [
         'Tout de Elite Pro',
@@ -819,6 +819,15 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                       <div className="text-4xl font-bold text-apple-gray-dark">
                         Gratuit
                       </div>
+                    ) : plan.price === 'Sur mesure' ? (
+                      <>
+                        <div className="text-3xl font-bold text-apple-gray-dark">
+                          Sur mesure
+                        </div>
+                        <div className="text-sm text-apple-gray">
+                          Prix selon vos besoins
+                        </div>
+                      </>
                     ) : (
                       <>
                         <div className="text-4xl font-bold text-apple-gray-dark">
