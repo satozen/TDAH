@@ -11,6 +11,7 @@ import LandingPage from '@/components/LandingPage'
 import WelcomeForm from '@/components/WelcomeForm'
 import Dashboard from '@/components/Dashboard'
 import ModuleContent from '@/components/ModuleContent'
+import Module1 from '@/components/Module1'
 import type { UserProfile } from '@/types'
 
 type AppStage = 'landing' | 'form' | 'dashboard' | 'module'
@@ -99,12 +100,16 @@ export default function Home() {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.4 }}
           >
-            <ModuleContent
-              moduleId={currentModule}
-              userProfile={userProfile}
-              onComplete={handleModuleComplete}
-              onBack={handleBackToModules}
-            />
+            {currentModule === 1 ? (
+              <Module1 />
+            ) : (
+              <ModuleContent
+                moduleId={currentModule}
+                userProfile={userProfile}
+                onComplete={handleModuleComplete}
+                onBack={handleBackToModules}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>

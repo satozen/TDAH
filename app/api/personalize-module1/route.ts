@@ -57,17 +57,22 @@ Retourne UNIQUEMENT un objet JSON valide (pas de markdown, pas de texte autour) 
 {
   "welcomeMessage": "Message personnalisé accueillant (2-3 phrases)",
   "tdahManifestations": [
-    "3-4 exemples de comment le TDAH se manifeste spécifiquement dans leur business/secteur"
+    "3-4 exemples détaillés de comment le TDAH se manifeste spécifiquement dans leur business/secteur (2-3 phrases chacun)"
   ],
   "relevantExamples": [
-    "2-3 scenarios concrets tirés de leur réalité entrepreneuriale"
+    "2-3 scenarios concrets et détaillés tirés de leur réalité entrepreneuriale (3-4 phrases chacun, avec contexte)"
   ],
   "customizedStrengths": [
-    "3-4 forces TDAH adaptées à leur profil (avec exemples de leur secteur)"
+    "3-4 forces TDAH adaptées à leur profil avec explications détaillées (2-3 phrases chacune, avec exemples concrets de leur secteur)"
   ],
   "actionPlan": [
-    "3-5 premières actions concrètes à prendre cette semaine"
-  ]
+    "3-5 premières actions concrètes à prendre cette semaine (chaque action doit être détaillée avec pourquoi et comment)"
+  ],
+  "detailedExplanations": {
+    "whyThisMatters": "Explication détaillée (4-5 phrases) de pourquoi comprendre leur profil TDAH est crucial pour leur succès entrepreneurial",
+    "commonPatterns": "Description (3-4 phrases) des patterns TDAH qu'ils vivent probablement dans leur secteur",
+    "hopeMessage": "Message d'espoir personnalisé (3-4 phrases) basé sur leur profil et leurs défis"
+  }
 }`
 
     // Construction du prompt utilisateur
@@ -145,30 +150,35 @@ Génère un contenu personnalisé pour ce profil. Sois spécifique à leur secte
 // Contenu de fallback (générique mais utile)
 function getFallbackContent(profile: Partial<UserProfile>) {
   return {
-    welcomeMessage: `Bienvenue ${profile.name || 'dans'} ce module ! Nous allons explorer ensemble comment votre cerveau TDAH fonctionne et comment en tirer parti dans votre entrepreneuriat.`,
+    welcomeMessage: `Bienvenue ${profile.name || ''} dans ce module ! Nous allons explorer ensemble comment votre cerveau TDAH fonctionne et comment en tirer parti dans votre entrepreneuriat.`,
     tdahManifestations: [
-      "Vous commencez plein de projets passionnants mais avez du mal à les terminer",
-      "Les tâches administratives vous donnent envie de fuir (et vous le faites souvent)",
-      "Vous êtes génial en situation d'urgence mais procrastinez sur tout le reste",
-      "Votre bureau et votre to-do list ressemblent à un champ de bataille"
+      "Vous commencez plein de projets passionnants mais avez du mal à les terminer. Chaque nouveau projet vous excite plus que celui en cours, créant un cycle de projets inachevés qui s'accumulent.",
+      "Les tâches administratives vous donnent envie de fuir (et vous le faites souvent). Factures, déclarations, paperasse - tout ce qui est répétitif et ennuyeux devient une montagne insurmontable.",
+      "Vous êtes génial en situation d'urgence mais procrastinez sur tout le reste. Les deadlines de dernière minute vous motivent, mais les tâches sans urgence traînent indéfiniment.",
+      "Votre bureau et votre to-do list ressemblent à un champ de bataille. Vous savez qu'il faut organiser, mais vous ne savez pas par où commencer, alors vous ne faites rien."
     ],
     relevantExamples: [
-      "Vous êtes hyper-productif de 22h à 2h du matin, mais incapable de vous concentrer à 14h",
-      "Vous avez 47 idées brillantes par jour, mais vous ne savez plus laquelle poursuivre",
-      "Vous oubliez régulièrement des rendez-vous clients malgré vos bonnes intentions"
+      "Vous êtes hyper-productif de 22h à 2h du matin, mais incapable de vous concentrer à 14h. C'est votre rythme naturel TDAH : votre cerveau s'active mieux quand tout est calme et qu'il n'y a plus de distractions.",
+      "Vous avez 47 idées brillantes par jour, mais vous ne savez plus laquelle poursuivre. Votre créativité TDAH est un super-pouvoir, mais sans système pour capturer et prioriser, elle devient un handicap.",
+      "Vous oubliez régulièrement des rendez-vous clients malgré vos bonnes intentions. Ce n'est pas un manque de respect, c'est votre mémoire de travail TDAH qui ne retient pas les informations sans support externe."
     ],
     customizedStrengths: [
-      "💡 **Créativité explosive**: Votre cerveau fait des connexions que les autres ne voient pas",
-      "⚡ **Hyperfocus stratégique**: Quand c'est intéressant, vous pouvez travailler 8h d'affilée",
-      "🎯 **Audace calculée**: Votre impulsivité bien canalisée devient du courage entrepreneurial",
-      "🔥 **Résilience au chaos**: Vous prospérez dans l'incertitude que d'autres fuient"
+      "💡 **Créativité explosive**: Votre cerveau fait des connexions que les autres ne voient pas. Cette pensée divergente est un atout majeur en entrepreneuriat où l'innovation est clé.",
+      "⚡ **Hyperfocus stratégique**: Quand c'est intéressant, vous pouvez travailler 8h d'affilée avec une productivité exceptionnelle. L'art est d'apprendre à déclencher cet état intentionnellement.",
+      "🎯 **Audace calculée**: Votre impulsivité bien canalisée devient du courage entrepreneurial. Vous prenez des risques que d'autres n'osent pas, créant des opportunités uniques.",
+      "🔥 **Résilience au chaos**: Vous prospérez dans l'incertitude que d'autres fuient. Le chaos entrepreneurial ne vous paralyse pas, il vous stimule."
     ],
     actionPlan: [
-      "Compléter l'auto-évaluation ASRS pour quantifier vos symptômes",
-      "Identifier vos 3 plus grands obstacles TDAH dans votre business",
-      "Créer un système de capture simple (une seule app pour tout noter)",
-      "Programmer 15 min demain matin pour vider votre tête de toutes vos idées"
-    ]
+      "Compléter l'auto-évaluation ASRS pour quantifier vos symptômes. Cette base vous permettra de mesurer vos progrès au fil du temps.",
+      "Identifier vos 3 plus grands obstacles TDAH dans votre business. Soyez spécifique : quelles situations vous font le plus souffrir ?",
+      "Créer un système de capture simple (une seule app pour tout noter). Choisissez une app et utilisez-la pendant 7 jours sans exception.",
+      "Programmer 15 min demain matin pour vider votre tête de toutes vos idées. Écrivez tout ce qui vous passe par la tête, sans jugement."
+    ],
+    detailedExplanations: {
+      whyThisMatters: "Comprendre votre profil TDAH n'est pas juste une curiosité intellectuelle - c'est la base de tout votre succès entrepreneurial. Sans cette compréhension, vous continuerez à vous battre contre votre cerveau au lieu de travailler avec lui. Chaque stratégie qu'on va développer dans ce programme est basée sur cette compréhension profonde de comment vous fonctionnez.",
+      commonPatterns: "Dans votre secteur, les entrepreneurs TDAH vivent souvent des patterns similaires : cycles d'hyperfocus suivis de périodes d'épuisement, difficultés avec les tâches administratives répétitives, mais excellente performance dans l'innovation et la résolution de problèmes complexes. Vous n'êtes pas seul(e) dans ces défis.",
+      hopeMessage: "Votre TDAH n'est pas un handicap dans l'entrepreneuriat - c'est souvent un avantage compétitif. Les entrepreneurs TDAH représentent 29% de tous les entrepreneurs, bien au-dessus de la moyenne de la population. Vous êtes en bonne compagnie, et ce programme va vous montrer comment transformer vos défis en forces."
+    }
   }
 }
 
