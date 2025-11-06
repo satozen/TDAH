@@ -84,6 +84,19 @@ L'application sera accessible sur **http://localhost:3000** 🎉
 
 ## 🎨 Design System
 
+### Inspiration Design
+**[AdventureGen.ai](https://adventuregen.ai)** - Site de référence pour l'esthétique et l'UX
+
+**Éléments clés à intégrer:**
+- 🌅 **Gradients dynamiques** - Transitions violet → rose avec profondeur
+- ✨ **Hero immersif** - Grande image de fond avec overlay subtil
+- 🎯 **Prompt box central** - Zone d'interaction claire et épurée
+- 💫 **Animations fluides** - Micro-interactions sur hover et actions
+- 🌈 **Palette vibrante** - Couleurs saturées mais équilibrées (purple, pink, orange)
+- 📱 **Typographie bold** - Titres impactants, hierarchy claire
+- 🎨 **Espace généreux** - Breathing room entre les sections
+- 🔮 **Glassmorphism moderne** - Cards semi-transparentes avec backdrop blur
+
 ### Couleurs Apple
 ```typescript
 'apple-blue': '#007AFF',        // Primaire
